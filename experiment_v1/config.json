@@ -1,0 +1,15 @@
+{
+  "random_seed": 2026,
+  "outer_folds": 5,
+  "inner_folds": 4,
+  "correlation_threshold": 0.90,
+  "winsor_lower_quantile": 0.01,
+  "winsor_upper_quantile": 0.99,
+  "pearson_top_k": [10, 20, 30],
+  "logistic_c": [0.03, 0.1, 0.3, 1.0, 3.0],
+  "l1_ratio": [0.25, 0.5, 0.75, 1.0],
+  "class_weight": [null, "balanced"],
+  "bootstrap_iterations": 1000,
+  "n_jobs": -1,
+  "primary_scoring": "roc_auc"
+}

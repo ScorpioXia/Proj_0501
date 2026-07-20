@@ -1,0 +1,33 @@
+### 结果文件夹
+
+experiment_results_v1/
+
+experiment_results_v2/
+
+experiment_results_v2_sensitivity/
+
+
+
+### 特征文件夹
+
+features_311/
+
+
+
+
+
+### Python 缓存
+__pycache__/
+*.pyc
+
+### 环境变量
+.env
+
+*.h5
+
+*.pth
+
+*.xlsx
+
+*.csv
+
