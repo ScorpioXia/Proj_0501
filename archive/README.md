@@ -6,6 +6,8 @@
 - `v3/results`: completed v3 formal results and validation-only outputs.
 - `v4/code`: exact code/configuration snapshot for the locked repeated nested-CV experiment.
 - `v4/results`: completed 10-seed x 5-fold repeated nested-CV outputs, including per-seed checkpoints.
+- `v5/code`: exact Pearson-screened factor-analysis pipeline snapshot.
+- `v5/results`: completed 10-seed x 5-fold factor-model outputs and checkpoints.
 
 Archived code is retained for provenance and is not imported by the current v4
 pipeline.
