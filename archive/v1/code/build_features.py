@@ -87,7 +87,15 @@ class BuildResult:
 
 
 def _normalise_ids(values: pd.Series) -> pd.Series:
-    return values.astype("string").str.strip()
+    s = values.astype("string").str.strip()
+    numeric = pd.to_numeric(s, errors="coerce")
+    finite = numeric.dropna()
+    is_int = finite == finite.astype("Int64")
+    mask = pd.Series(False, index=s.index, dtype=bool)
+    mask.loc[finite.index] = is_int.values
+    s = s.copy()
+    s[mask] = numeric[mask].astype("Int64").astype("string")
+    return s
 
 
 def _validate_cohort(df: pd.DataFrame, target_ids: list[str], name: str) -> None:
@@ -187,29 +195,60 @@ def _robust_outlier_records(table: pd.DataFrame, feature_set: str) -> pd.DataFra
     return pd.DataFrame(records)
 
 
-def build_feature_tables(project_dir: Path, output_dir: Path) -> BuildResult:
-    source_dir = project_dir / "features_311"
-    labels = pd.read_excel(project_dir / "patient_stable_311.xlsx", usecols=["patient_id", "label"])
+def build_feature_tables(
+    project_dir: Path,
+    output_dir: Path,
+    feature_dir: Path | None = None,
+    label_file: Path | None = None,
+    feature_version: str = "v6",
+    expected_patients: int | None = 311,
+) -> BuildResult:
+    source_dir = feature_dir or (project_dir / "features_311")
+
+    if label_file and label_file.suffix.lower() == ".csv":
+        try:
+            labels = pd.read_csv(label_file, usecols=["patient_id", "label"])
+        except UnicodeDecodeError:
+            labels = pd.read_csv(label_file, usecols=["patient_id", "label"], encoding="gbk")
+    elif label_file:
+        labels = pd.read_excel(label_file, usecols=["patient_id", "label"])
+    else:
+        labels = pd.read_excel(project_dir / "patient_stable_311.xlsx", usecols=["patient_id", "label"])
+
     labels["patient_id"] = _normalise_ids(labels["patient_id"])
-    if len(labels) != 311 or labels["patient_id"].nunique() != 311:
-        raise ValueError("Label workbook must contain exactly 311 unique patients")
+    labels = labels.dropna(subset=["label"]).copy()
+    labels["label"] = pd.to_numeric(labels["label"], errors="coerce").astype(int)
+    labels = labels[labels["label"].isin([0, 1])].copy()
+
+    if expected_patients is not None:
+        if len(labels) != expected_patients or labels["patient_id"].nunique() != expected_patients:
+            raise ValueError(
+                f"Label file must contain exactly {expected_patients} unique patients; "
+                f"got {len(labels)} rows, {labels['patient_id'].nunique()} unique"
+            )
     if set(labels["label"].dropna().unique()) != {0, 1}:
         raise ValueError("Labels must be binary values 0 and 1")
     target_ids = labels["patient_id"].tolist()
 
-    df2 = pd.read_csv(source_dir / "muscle_features_2d_v6.csv", low_memory=False)
-    df3 = pd.read_csv(source_dir / "muscle_features_3d_v6.csv", low_memory=False)
-    cross = pd.read_csv(source_dir / "muscle_features_level3_cross_v6.csv", low_memory=False)
-    multi = pd.read_csv(source_dir / "muscle_features_level3_multi_v6.csv", low_memory=False)
+    def _read_csv_safe(path: Path) -> pd.DataFrame:
+        try:
+            return pd.read_csv(path, low_memory=False)
+        except UnicodeDecodeError:
+            return pd.read_csv(path, low_memory=False, encoding="gbk")
+
+    df2 = _read_csv_safe(source_dir / f"muscle_features_2d_{feature_version}.csv")
+    df3 = _read_csv_safe(source_dir / f"muscle_features_3d_{feature_version}.csv")
+    cross = _read_csv_safe(source_dir / f"muscle_features_level3_cross_{feature_version}.csv")
+    multi = _read_csv_safe(source_dir / f"muscle_features_level3_multi_{feature_version}.csv")
     for name, frame in (("2d", df2), ("3d", df3), ("cross", cross), ("multi", multi)):
         frame["patient_id"] = _normalise_ids(frame["patient_id"])
         _validate_cohort(frame, target_ids, name)
 
     bug_records = []
     for feature, reason in KNOWN_EXCLUSIONS["2d"].items():
-        bug_records.append({"severity": "warning", "stage": "source_audit", "file": "muscle_features_2d_v6.csv", "feature": feature, "issue": reason, "action": "excluded_from_primary_experiment"})
+        bug_records.append({"severity": "warning", "stage": "source_audit", "file": f"muscle_features_2d_{feature_version}.csv", "feature": feature, "issue": reason, "action": "excluded_from_primary_experiment"})
     for feature, reason in KNOWN_EXCLUSIONS["3d"].items():
-        bug_records.append({"severity": "warning", "stage": "source_audit", "file": "muscle_features_3d_v6.csv", "feature": feature, "issue": reason, "action": "excluded_from_primary_experiment"})
+        bug_records.append({"severity": "warning", "stage": "source_audit", "file": f"muscle_features_3d_{feature_version}.csv", "feature": feature, "issue": reason, "action": "excluded_from_primary_experiment"})
 
     two_d_wide, feature_dictionary = _aggregate_2d(df2)
 
@@ -218,19 +257,32 @@ def build_feature_tables(project_dir: Path, output_dir: Path) -> BuildResult:
     three_d_wide = _flatten_pivot(df3, features_3d)
     for muscle in sorted(df3["muscle_name"].unique()):
         for feature in features_3d:
-            feature_dictionary.append({"feature": f"{muscle}__{feature}", "feature_set": "3d_level3", "source": "muscle_features_3d_v6.csv", "muscle": muscle, "base_feature": feature, "aggregation": "precomputed_3d", "role": "candidate_predictor"})
+            feature_dictionary.append({"feature": f"{muscle}__{feature}", "feature_set": "3d_level3", "source": f"muscle_features_3d_{feature_version}.csv", "muscle": muscle, "base_feature": feature, "aggregation": "precomputed_3d", "role": "candidate_predictor"})
 
     cross_features = [c for c in cross.select_dtypes(include=np.number).columns]
     cross_wide = _flatten_pivot(cross, cross_features)
+    dup_in_cross = [c for c in cross_wide.columns if c in three_d_wide.columns]
+    if dup_in_cross:
+        cross_wide = cross_wide.drop(columns=dup_in_cross)
+        bug_records.append({
+            "severity": "warning", "stage": "feature_merge",
+            "file": f"muscle_features_level3_cross_{feature_version}.csv",
+            "feature": ", ".join(dup_in_cross),
+            "issue": "duplicate columns also present in 3d features; cross-layer duplicates dropped",
+            "action": "dropped from cross-layer table",
+        })
     for muscle in sorted(cross["muscle_name"].unique()):
         for feature in cross_features:
-            feature_dictionary.append({"feature": f"{muscle}__{feature}", "feature_set": "3d_level3", "source": "muscle_features_level3_cross_v6.csv", "muscle": muscle, "base_feature": feature, "aggregation": "precomputed_cross_layer", "role": "candidate_predictor"})
+            col_name = f"{muscle}__{feature}"
+            if col_name in dup_in_cross:
+                continue
+            feature_dictionary.append({"feature": col_name, "feature_set": "3d_level3", "source": f"muscle_features_level3_cross_{feature_version}.csv", "muscle": muscle, "base_feature": feature, "aggregation": "precomputed_cross_layer", "role": "candidate_predictor"})
 
     multi_wide = multi.set_index("patient_id").drop(columns=[], errors="ignore")
     multi_features = [c for c in multi_wide.select_dtypes(include=np.number).columns]
     multi_wide = multi_wide[multi_features]
     for feature in multi_features:
-        feature_dictionary.append({"feature": feature, "feature_set": "3d_level3", "source": "muscle_features_level3_multi_v6.csv", "muscle": "multi_muscle", "base_feature": feature, "aggregation": "precomputed_multi_muscle", "role": "candidate_predictor"})
+        feature_dictionary.append({"feature": feature, "feature_set": "3d_level3", "source": f"muscle_features_level3_multi_{feature_version}.csv", "muscle": "multi_muscle", "base_feature": feature, "aggregation": "precomputed_multi_muscle", "role": "candidate_predictor"})
 
     def finish(wide: pd.DataFrame) -> pd.DataFrame:
         table = wide.reindex(target_ids).reset_index().rename(columns={"index": "patient_id"})

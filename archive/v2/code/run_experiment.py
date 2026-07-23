@@ -36,6 +36,11 @@ def parse_args():
     parser.add_argument("--config", type=Path, default=Path(__file__).resolve().with_name("config.json"))
     parser.add_argument("--models", nargs="*", default=None, help="Optional subset, e.g. xgboost svm_rbf")
     parser.add_argument("--feature-sets", nargs="*", default=None, help="Optional subset, e.g. E1_3d_level3 E3_combined")
+    parser.add_argument("--feature-dir", type=Path, default=None, help="Directory containing feature CSV files")
+    parser.add_argument("--label-file", type=Path, default=None, help="Label file (CSV or Excel) with patient_id and label columns")
+    parser.add_argument("--feature-version", type=str, default="v6", help="Feature file version suffix, e.g. v6 or v7")
+    parser.add_argument("--expected-patients", type=str, default="311", help="Expected number of patients, or 'none' to skip check")
+    parser.add_argument("--skip-env-check", action="store_true", help="Skip nnUNet-master environment check")
     return parser.parse_args()
 
 
@@ -72,15 +77,30 @@ def main():
 
     try:
         log(f"START experiment_v2; executable={sys.executable}")
-        if "nnUNet-master".lower() not in sys.executable.lower():
-            raise RuntimeError("Stage 2 must run in the nnUNet-master Conda environment")
+        if not args.skip_env_check and "nnUNet-master".lower() not in sys.executable.lower():
+            raise RuntimeError("Stage 2 must run in the nnUNet-master Conda environment (use --skip-env-check to bypass)")
+
+        if args.feature_dir or args.label_file or args.feature_version != "v6" or args.expected_patients is not None:
+            log(f"Custom dataset: feature_dir={args.feature_dir}, label_file={args.label_file}, "
+                f"feature_version={args.feature_version}, expected_patients={args.expected_patients}")
 
         log("Run retained-feature numerical accuracy audit")
-        accuracy_audit = run_feature_accuracy_audit(project_dir, output_dir)
-        log(f"Feature audit: errors={(accuracy_audit.severity == 'error').sum()}, warnings={(accuracy_audit.severity == 'warning').sum()}")
+        if args.feature_dir or args.label_file:
+            log("Skipping feature accuracy audit for custom dataset (audit is calibrated for 311-patient v6 features)")
+            accuracy_audit = pd.DataFrame(columns=["severity", "stage", "file", "feature", "issue", "action"])
+        else:
+            accuracy_audit = run_feature_accuracy_audit(project_dir, output_dir)
+            log(f"Feature audit: errors={(accuracy_audit.severity == 'error').sum()}, warnings={(accuracy_audit.severity == 'warning').sum()}")
 
         log("Rebuild deterministic patient-level feature tables")
-        build = build_feature_tables(project_dir, output_dir)
+        expected_patients = None if args.expected_patients.lower() == "none" else int(args.expected_patients)
+        build = build_feature_tables(
+            project_dir, output_dir,
+            feature_dir=args.feature_dir,
+            label_file=args.label_file,
+            feature_version=args.feature_version,
+            expected_patients=expected_patients,
+        )
         baseline_pred, baseline_folds = prevalence_predictions(build.tables["E1_3d_level3"], config)
         all_pred, all_folds, all_importance, issues = [baseline_pred], [baseline_folds], [], []
 
@@ -103,7 +123,11 @@ def main():
         fold_performance = pd.concat(all_folds, ignore_index=True)
         importance_rows = pd.concat(all_importance, ignore_index=True) if all_importance else pd.DataFrame()
         performance = bootstrap_performance(predictions, config["bootstrap_iterations"], config["random_seed"])
-        comparisons = paired_auc_vs_references(predictions, config["bootstrap_iterations"], config["random_seed"])
+        if args.feature_dir or args.label_file:
+            comparisons = pd.DataFrame(columns=["reference", "comparison", "auc_difference", "ci_low", "ci_high", "bootstrap_probability_gt_reference"])
+            log("Skipping paired AUC vs v1 references for custom dataset")
+        else:
+            comparisons = paired_auc_vs_references(predictions, config["bootstrap_iterations"], config["random_seed"])
         summary_importance = importance_summary(importance_rows, config["outer_folds"])
 
         predictions.to_csv(output_dir / "nested_cv_predictions.csv", index=False, encoding="utf-8-sig")
@@ -117,9 +141,10 @@ def main():
         )
         save_performance_plots(predictions, performance, output_dir)
 
+        n_patients = len(build.tables[list(build.tables.keys())[0]])
         payload = {
             "status": "completed", "completed_at": datetime.now().isoformat(timespec="seconds"),
-            "python_executable": sys.executable, "patients": 311,
+            "python_executable": sys.executable, "patients": n_patients,
             "models_run": models, "feature_sets_run": feature_sets,
             "performance": performance.to_dict(orient="records"),
             "feature_audit_errors": int((accuracy_audit.severity == "error").sum()),

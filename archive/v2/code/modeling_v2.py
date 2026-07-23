@@ -22,7 +22,6 @@ import sklearn
 import xgboost
 from interpret import __version__ as interpret_version
 from interpret.glassbox import ExplainableBoostingClassifier
-from joblib import Memory
 from lightgbm import LGBMClassifier
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.ensemble import RandomForestClassifier
@@ -110,7 +109,6 @@ def make_classifier(model_name: str, seed: int):
 
 def make_pipeline(model_name: str, config: dict):
     scaler = StandardScaler() if model_name == "svm_rbf" else "passthrough"
-    memory = Memory(location=config.get("_cache_dir"), verbose=0) if config.get("_cache_dir") else None
     return Pipeline([
         ("imputer", SimpleImputer(strategy="median")),
         ("clipper", QuantileClipper(config["winsor_lower_quantile"], config["winsor_upper_quantile"])),
@@ -119,7 +117,7 @@ def make_pipeline(model_name: str, config: dict):
         ("selector", StablePointBiserialSelector()),
         ("scaler", scaler),
         ("classifier", make_classifier(model_name, config["random_seed"])),
-    ], memory=memory)
+    ])
 
 
 def candidate_grid(model_name: str, config: dict):
@@ -226,7 +224,17 @@ def nested_cv_model(table: pd.DataFrame, feature_set: str, model_name: str,
             f"selected={len(names)}; seconds={metrics['runtime_seconds']:.1f}"
         )
         if cache_dir.exists():
-            shutil.rmtree(cache_dir)
+            for attempt in range(5):
+                try:
+                    shutil.rmtree(cache_dir)
+                    break
+                except PermissionError:
+                    time.sleep(0.5)
+            else:
+                try:
+                    shutil.rmtree(cache_dir, ignore_errors=True)
+                except Exception:
+                    pass
     return pd.DataFrame(predictions), pd.DataFrame(folds), pd.DataFrame(importances), issues
 
 

@@ -1,0 +1,53 @@
+{
+  "random_seed": 2026,
+  "outer_folds": 5,
+  "inner_folds": 4,
+  "correlation_threshold": 0.90,
+  "winsor_lower_quantile": 0.01,
+  "winsor_upper_quantile": 0.99,
+  "bootstrap_iterations": 2000,
+  "permutation_importance_repeats": 5,
+  "search_n_jobs": 1,
+  "primary_scoring": "roc_auc",
+  "feature_sets": ["E1_3d_level3", "E2_2d", "E3_combined"],
+  "models": ["elastic_net", "xgboost", "lightgbm", "random_forest", "svm_rbf", "ebm"],
+  "candidates": {
+    "elastic_net": [
+      {"selector_k": 10, "C": 0.1, "l1_ratio": 0.0, "class_weight": null},
+      {"selector_k": 20, "C": 0.1, "l1_ratio": 0.5, "class_weight": "balanced"},
+      {"selector_k": 30, "C": 1.0, "l1_ratio": 0.5, "class_weight": null},
+      {"selector_k": 50, "C": 1.0, "l1_ratio": 0.8, "class_weight": "balanced"}
+    ],
+    "xgboost": [
+      {"selector_k": 10, "n_estimators": 200, "max_depth": 1, "learning_rate": 0.03, "min_child_weight": 5, "subsample": 0.8, "colsample_bytree": 0.7, "reg_alpha": 0.1, "reg_lambda": 5.0},
+      {"selector_k": 20, "n_estimators": 300, "max_depth": 2, "learning_rate": 0.03, "min_child_weight": 5, "subsample": 0.8, "colsample_bytree": 0.7, "reg_alpha": 0.1, "reg_lambda": 5.0},
+      {"selector_k": 30, "n_estimators": 250, "max_depth": 2, "learning_rate": 0.05, "min_child_weight": 5, "subsample": 0.9, "colsample_bytree": 0.8, "reg_alpha": 0.0, "reg_lambda": 5.0},
+      {"selector_k": 20, "n_estimators": 200, "max_depth": 3, "learning_rate": 0.03, "min_child_weight": 10, "subsample": 0.8, "colsample_bytree": 0.6, "reg_alpha": 0.5, "reg_lambda": 10.0}
+    ],
+    "lightgbm": [
+      {"selector_k": 10, "n_estimators": 150, "learning_rate": 0.03, "num_leaves": 3, "max_depth": 2, "min_child_samples": 20, "subsample": 0.8, "colsample_bytree": 0.7, "reg_alpha": 0.1, "reg_lambda": 5.0},
+      {"selector_k": 20, "n_estimators": 250, "learning_rate": 0.03, "num_leaves": 7, "max_depth": 3, "min_child_samples": 20, "subsample": 0.8, "colsample_bytree": 0.7, "reg_alpha": 0.1, "reg_lambda": 5.0},
+      {"selector_k": 30, "n_estimators": 200, "learning_rate": 0.05, "num_leaves": 7, "max_depth": 3, "min_child_samples": 30, "subsample": 0.9, "colsample_bytree": 0.8, "reg_alpha": 0.5, "reg_lambda": 5.0},
+      {"selector_k": 20, "n_estimators": 150, "learning_rate": 0.05, "num_leaves": 15, "max_depth": 4, "min_child_samples": 30, "subsample": 0.8, "colsample_bytree": 0.6, "reg_alpha": 1.0, "reg_lambda": 10.0}
+    ],
+    "random_forest": [
+      {"selector_k": 10, "n_estimators": 300, "max_depth": 3, "min_samples_leaf": 10, "max_features": "sqrt", "class_weight": null},
+      {"selector_k": 20, "n_estimators": 300, "max_depth": 5, "min_samples_leaf": 5, "max_features": "sqrt", "class_weight": "balanced"},
+      {"selector_k": 30, "n_estimators": 300, "max_depth": 5, "min_samples_leaf": 10, "max_features": 0.5, "class_weight": "balanced"},
+      {"selector_k": 20, "n_estimators": 300, "max_depth": null, "min_samples_leaf": 5, "max_features": 0.3, "class_weight": "balanced_subsample"}
+    ],
+    "svm_rbf": [
+      {"selector_k": 10, "C": 0.1, "gamma": "scale", "class_weight": null},
+      {"selector_k": 20, "C": 0.1, "gamma": "scale", "class_weight": "balanced"},
+      {"selector_k": 20, "C": 1.0, "gamma": "scale", "class_weight": null},
+      {"selector_k": 30, "C": 1.0, "gamma": "scale", "class_weight": "balanced"},
+      {"selector_k": 30, "C": 10.0, "gamma": 0.01, "class_weight": "balanced"}
+    ],
+    "ebm": [
+      {"selector_k": 10, "max_bins": 32, "learning_rate": 0.03, "max_leaves": 2, "min_samples_leaf": 10},
+      {"selector_k": 20, "max_bins": 64, "learning_rate": 0.03, "max_leaves": 2, "min_samples_leaf": 5},
+      {"selector_k": 30, "max_bins": 64, "learning_rate": 0.05, "max_leaves": 2, "min_samples_leaf": 10},
+      {"selector_k": 20, "max_bins": 32, "learning_rate": 0.03, "max_leaves": 3, "min_samples_leaf": 10}
+    ]
+  }
+}
