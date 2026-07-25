@@ -19,3 +19,11 @@ The root `run_experiment.py` is the v5 entry point. It locks the Pearson
 threshold at 0.15, tests 3/5/8/10 factors, compares ElasticNet, XGBoost, and
 LightGBM, and uses ten random seeds. Current code does not import anything from
 `archive/`.
+
+## Independent v6 segment pilot
+
+- `segment_pilot.py`: aligns the 30-patient slice-level annotation table with
+  v7 2D muscle features, constructs global/target/adjacent/mechanistic feature
+  sets, and compares them on identical repeated nested-CV splits.
+- Root `run_segment_pilot.py`: editable PyCharm entry point. It writes only to
+  `results/v6_segment_pilot_test30` and does not change the v5 main pipeline.
