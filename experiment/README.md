@@ -27,3 +27,12 @@ LightGBM, and uses ten random seeds. Current code does not import anything from
   sets, and compares them on identical repeated nested-CV splits.
 - Root `run_segment_pilot.py`: editable PyCharm entry point. It writes only to
   `results/v6_segment_pilot_test30` and does not change the v5 main pipeline.
+
+## v7 compact 219-patient segment validation
+
+- `segment_validation_219.py`: creates a protocol-inferred 219-patient
+  annotation table from the verified patient-77 mapping, builds locked compact
+  global/target/gradient panels, and performs a primary validation in the 189
+  patients not used by the v6 pilot.
+- Root `run_segment_validation_219.py`: editable PyCharm entry point. The
+  all-219 analysis is saved as a secondary sensitivity analysis.
