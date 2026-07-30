@@ -8,6 +8,8 @@
 - `v4/results`: completed 10-seed x 5-fold repeated nested-CV outputs, including per-seed checkpoints.
 - `v5/code`: exact Pearson-screened factor-analysis pipeline snapshot.
 - `v5/results`: completed 10-seed x 5-fold factor-model outputs and checkpoints.
+- `v6/code`: exact Pearson-to-six-factor replication and leakage-audit snapshot.
+- `v6/results`: completed 219-patient 10-seed x 5-fold v6 outputs.
 
 Archived code is retained for provenance and is not imported by the current v4
 pipeline.

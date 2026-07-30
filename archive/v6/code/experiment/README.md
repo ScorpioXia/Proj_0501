@@ -53,10 +53,3 @@ threshold of 0.25, then runs the previously approved 0.15 fallback with six
 varimax factors.  It reports an intentionally optimistic full-cohort
 screening/factor-construction workflow beside a leakage-safe repeated nested-CV
 workflow.  Only `nested_train_only` is a valid generalization estimate.
-## v7 Stability LASSO <=7 replication
-
-`run_stability_lasso_experiment.py` implements near-zero variance filtering,
-Spearman redundancy filtering, univariate logistic pre-screening, 100
-stratified Stability LASSO subsamples, a 60% frequency threshold, and an EPV
-cap of seven variables. `nested_train_only` is primary;
-`optimistic_global` is an intentionally invalid leakage diagnostic.

@@ -16,3 +16,9 @@ __pycache__/
 .env
 *.h5
 *.pth
+
+# Temporary artifact generation files
+.artifact_tmp/
+
+# JavaScript dependencies
+node_modules/
