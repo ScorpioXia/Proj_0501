@@ -1,25 +1,12 @@
-# Current results
+# 正式结果目录
 
-- `v4_repeated_nested_cv/`: completed v4 10-seed repeated nested-CV experiment.
-- `v6_segment_pilot_test30/`: completed 30-patient segment-localisation
-  feasibility experiment using v7 slice-level 2D features.
-- `v7_segment_validation_219/`: compact segment validation with a primary
-  189-patient confirmation cohort and secondary all-219 sensitivity analysis.
-- `v8_nested_feature_discovery/`: exploratory nested 10/15/20-feature subset
-  discovery with stability evidence and negative controls.
-- `pre_refactor_v7_20260722/`: pre-refactor v7 historical output; not a current
-  formal result because it used the earlier pipeline.
+根目录下只保存当前主线 `v11_clinical_mri/`。历史 v01–v10 的结果已经随各版代码一并冻结到 `archive/<版本>/results/`。
 
-The v3 single-seed formal run and validation-only output are frozen under
-`archive/v3/results/`.
-## v9_pearson_factor_replication
+`v11_clinical_mri/` 包含汇总指标、逐重复指标、OOF 预测、共享折分配、配对 AUC 比较、审计记录、运行环境和中英文解释。优先阅读：
 
-Reproduction and leakage audit of Pearson screening followed by six-factor
-analysis and machine learning.  The folder separates invalid
-`optimistic_global` pseudo-OOF estimates from valid `nested_train_only`
-predictions.
-## v7_stability_lasso_replication
+1. `v11_clinical_mri/README.md`：文件清单和证据等级；
+2. `v11_clinical_mri/RESULTS_INTERPRETATION_CN.md`：中文结果解释；
+3. `v11_clinical_mri/aggregate_performance.csv`：全部模型的聚合性能；
+4. `v11_clinical_mri/paired_auc_comparisons.csv`：联合模型相对 MRI 的同队列配对差值。
 
-Repeated outer validation of the near-zero variance -> redundancy ->
-univariate logistic -> Stability LASSO -> at most seven variables workflow.
-Only `nested_train_only` is valid predictive evidence.
+患者级 OOF、队列成员表与折分文件可能包含研究标识符，不应直接发布到公共仓库。

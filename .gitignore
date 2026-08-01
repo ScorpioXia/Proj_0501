@@ -1,16 +1,26 @@
-# Generated results and large tabular data
-results/*
-!results/README.md
+# Source data and frozen historical bulk outputs
+data/**/*.csv
+data/**/*.xlsx
 archive/**/results/
 archive/**/features/
-*.csv
-*.xlsx
+archive/legacy/
+
+# Current patient-level or fold-level outputs (aggregate reports remain visible)
+results/**/all_repeated_oof_predictions.csv
+results/**/mean_oof_predictions_by_patient.csv
+results/**/cohort_membership_and_clinical_values.csv
+results/**/shared_fold_assignments.csv
+results/**/inner_tuning_choices.csv
+results/**/run_stdout.log
+results/**/run_stderr.log
 
 # Python caches and local validation outputs
 __pycache__/
 *.pyc
+.pytest_cache/
 .validation_tmp/
 .smoke_tmp/
+.venv/
 
 # Environment and model binaries
 .env
@@ -20,5 +30,6 @@ __pycache__/
 # Temporary artifact generation files
 .artifact_tmp/
 
-# JavaScript dependencies
+# IDE and JavaScript dependencies
+.idea/
 node_modules/

@@ -1,0 +1,54 @@
+{
+  "canonical_version": "v11_clinical_mri",
+  "original_internal_version": "v8_clinical_mri",
+  "canonical_output_dir": "results/v11_clinical_mri",
+  "current_rerun_config": "configs/v11_clinical_mri.json",
+  "provenance_note": "The absolute paths below are preserved from the completed original run. Use current_rerun_config after repository organization.",
+  "label_file": "E:\\code\\Proj_0501\\Proj_0501\\PATIENT_LIST_FILE.csv",
+  "global_feature_file": "E:\\code\\Proj_0501\\Proj_0501\\results\\v5_factor_analysis\\patient_features_E3_combined_raw.csv",
+  "v7_feature_universe_file": "E:\\code\\Proj_0501\\Proj_0501\\results\\v7_stability_lasso_replication\\patient_feature_universe_raw.csv",
+  "v7_selection_file": "E:\\code\\Proj_0501\\Proj_0501\\results\\v7_stability_lasso_replication\\optimistic_global_selection_NOT_VALID.csv",
+  "output_dir": "E:\\code\\Proj_0501\\Proj_0501\\results\\v8_clinical_mri",
+  "repeats": 10,
+  "outer_folds": 5,
+  "inner_folds": 4,
+  "base_seed": 20260730,
+  "bootstrap_iterations": 3000,
+  "experiment_version": "v8_clinical_mri",
+  "runtime_seconds": 470.6284430027008,
+  "cohorts": {
+    "complete4": 95,
+    "age_bmi": 130,
+    "all_labeled": 312,
+    "locked7_overlap": 219,
+    "locked7_complete4_overlap": 68
+  },
+  "global_mri_features": [
+    "multifidus_3d_volume_asymmetry",
+    "multifidus_mean_fip",
+    "multifidus_mean_functional_csa",
+    "erector_spinae_mean_fip",
+    "erector_spinae_mean_functional_csa",
+    "psoas_mean_fip",
+    "psoas_mean_functional_csa"
+  ],
+  "locked_v7_features": [
+    "2d__target__psoas__Aspect_Ratio__mean",
+    "2d__target_minus_cranial__multifidus__Mean_Intensity_Lean_Muscle__mean",
+    "2d__target_minus_cranial__erector_spinae__Mean_Intensity_Lean_Muscle__mean",
+    "2d__target__erector_spinae__Texture_GLCM_Contrast__asymmetry",
+    "2d__target__erector_spinae__Std_Intensity_Muscle__asymmetry",
+    "3d__global__multifidus__3D_Volume__asymmetry",
+    "3d_cross__erector_spinae__Centroid_Z_Drift__mean"
+  ],
+  "environment": {
+    "python_executable": "C:\\ProgramData\\anaconda3\\envs\\nnUNet-master\\python.exe",
+    "python": "3.10.19 | packaged by conda-forge | (main, Oct 22 2025, 22:23:22) [MSC v.1944 64 bit (AMD64)]",
+    "prefix": "C:\\ProgramData\\anaconda3\\envs\\nnUNet-master",
+    "platform": "Windows-10-10.0.22621-SP0",
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "scikit_learn": "1.7.2",
+    "xgboost": "3.2.0"
+  }
+}

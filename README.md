@@ -1,69 +1,76 @@
-# Lumbar Stability Prediction from Paraspinal Muscle MRI
+# 腰椎稳定性预测项目
 
-The current mainline is version 5 (v5). It predicts lumbar stability from v7
-MRI-derived muscle features and uses only `patient_id` and binary `label` from
-`PATIENT_LIST_FILE.csv`. Patient names and pinyin are never used as identifiers.
+当前主线版本为 **v11_clinical_mri**。项目使用腰椎椎旁肌 MRI 肌肉特征与临床变量预测动态腰椎不稳定；根目录只保留最新版入口、配置、源代码和正式结果，历史实验均冻结在 `archive/`。
 
-## Current layout
+## 目录结构
 
 ```text
 Proj_0501/
-|- run_experiment.py              # v5 PyCharm entry point
-|- experiment/                    # current v5 pipeline
-|- features_312_20260722/         # current v7 feature CSV files
-|- PATIENT_LIST_FILE.csv          # cohort and labels
-|- results/v5_factor_analysis/    # completed v5 factor-analysis results
-|- archive/v3/, archive/v4/       # frozen prior code and results
-|- archive/v1/, archive/v2/       # older versions
-|- requirements.txt
-`- feature-name reference workbook
+├─ run_experiment.py                 # v11 唯一正式运行入口
+├─ configs/                          # 当前实验配置
+├─ src/lumbar_stability/             # 当前可复用 Python 包
+├─ data/
+│  ├─ labels/                        # 队列与标签源数据
+│  ├─ features/                      # 分割模型导出的 MRI 特征
+│  ├─ annotations/                   # 节段标注及试验队列标注
+│  └─ derived/v11_clinical_mri/      # v11 所需的冻结派生输入
+├─ results/v11_clinical_mri/         # 当前正式结果与解释
+├─ archive/v01...v10/                # 每版代码、结果和中文 README
+├─ archive/legacy/                   # 可追溯旧副本，不参与运行
+├─ docs/                             # 数据字典、版本沿革和整理记录
+├─ pyproject.toml                    # 当前包与依赖定义
+└─ requirements.txt                  # 当前主线固定依赖
 ```
 
-## v5 protocol
+任何历史代码都不被 v11 导入。各版本的统一编号、旧内部编号及实验结论见 [实验版本沿革](docs/EXPERIMENT_LINEAGE.md)，历史目录入口见 [archive/README.md](archive/README.md)。
 
-All 601 eligible patient-level v7 combined 2D/3D features enter the pipeline.
-Inside each training fold, features with absolute Pearson correlation below
-0.15 are removed, the retained features are standardized, and varimax-rotated
-factor analysis reduces them to at most ten factors. Inner CV chooses among 3,
-5, 8, and 10 requested factors and conservative settings for:
+## v11 做了什么
 
-- ElasticNet
-- XGBoost
-- LightGBM
+v11 在相同患者、相同外层折上比较临床模型、MRI 模型和临床+MRI 联合模型。主要包括四组分析：
 
-The protocol uses 10 random seeds (`2026` through `2035`). Each seed runs a
-five-fold outer nested CV, with four-fold inner tuning. Each candidate therefore
-has 50 outer validation splits and 3,120 repeated OOF predictions covering the
-same 312 patients ten times.
+1. 四项临床变量完整病例（95 例）：年龄、身高、体重、BMI；
+2. 年龄+BMI 敏感性队列（130 例）；
+3. 全部有标签患者（312 例）：XGBoost 原生处理缺失值，并加入缺失指示变量；
+4. 复用旧版由标签筛出的 7 项 MRI 特征：219 例复现及其中 68 例临床完整病例比较。
 
-The primary result is the mean of the ten repeat-level OOF metrics. Confidence
-intervals use a hierarchical bootstrap that resamples both patients and repeat
-seeds. Mean OOF predictions across repeats are reported separately as a
-secondary cross-fitted ensemble analysis.
+正式验证采用 10 次重复、每次 5 折外层交叉验证和 4 折内层调参。模型性能来自每位患者的重复 OOF 概率均值；联合模型与 MRI 模型的 AUC 差值在同一患者、同一折上配对计算。
 
-## Run in PyCharm
+## 当前结果摘要
 
-Use this interpreter:
+| 同一队列内的比较 | 临床 AUC（95%CI） | MRI AUC（95%CI） | 联合 AUC（95%CI） | 联合−MRI 配对差值（95%CI） |
+|---|---:|---:|---:|---:|
+| 四项临床完整病例，n=95 | 0.539（0.415–0.663） | 0.621（0.498–0.739） | 0.627（0.504–0.744） | +0.006（−0.043–0.054） |
+| 年龄+BMI，n=130 | 0.442（0.336–0.549） | 0.650（0.550–0.744） | 0.641（0.543–0.734） | −0.010（−0.023–0.003） |
+| 全标签队列，n=312 | 0.494（0.428–0.562） | 0.552（0.486–0.615） | 0.537（0.471–0.603） | −0.015（−0.037–0.006） |
+| 旧版标签筛选 MRI7 的临床完整子集，n=68 | 0.432（0.287–0.584） | 0.686（0.539–0.823） | **0.708（0.564–0.833）** | +0.023（−0.058–0.104） |
 
-```text
-C:\ProgramData\anaconda3\envs\nnUNet-master\python.exe
+这里明确保留了此前遗漏显示的 **0.708**。它是真实计算结果，但不能作为独立验证结论：这 7 项 MRI 特征曾利用同一批 219 例标签筛选；在 68 例上联合模型相对 MRI 的配对增益仅 +0.023，95%CI 跨 0。不能把 219 例的结果与 68 例的 0.708 直接比较。
+
+完整结果见 [v11 中文结果解释](results/v11_clinical_mri/RESULTS_INTERPRETATION_CN.md) 和 [结果文件说明](results/v11_clinical_mri/README.md)。
+
+## 运行当前版本
+
+推荐使用独立环境：
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+python run_experiment.py --output-dir results/v11_clinical_mri_rerun_YYYYMMDD
 ```
 
-Run `run_experiment.py` directly. The output directory is
-`results/v5_factor_analysis`. `RESUME=True` loads completed seed checkpoints,
-so an interrupted run continues without refitting completed repeats.
+入口会读取 [v11 配置](configs/v11_clinical_mri.json)。为保护已验证结果，程序默认拒绝写入非空目录；建议通过 `--output-dir` 为复跑指定新目录。只有明确需要替换时才使用 `--overwrite`。
 
-## Methodological safeguards
+整理后的结构和现有结果可用只读脚本复核：
 
-- The labeled cohort size is dynamic and comes from `PATIENT_LIST_FILE.csv`.
-- All patient joins use normalized `patient_id` only.
-- Imputation, clipping, variance filtering, fixed-threshold Pearson screening,
-  scaling, factor analysis, and tuning occur inside training folds.
-- `patient_id`, `csf_value`, pixel spacing, slice thickness, threshold/QC fields,
-  and absolute peak-slice indices are excluded from predictors.
-- Corrected v7 GLCM, `SA_V`, and `3D_Shape_Index` fields are eligible.
-- Still-duplicated GLRLM/GLSZM mappings remain excluded.
-- Denominator-sensitive multi-muscle ratios use log or bounded transforms.
+```powershell
+python scripts/validate_project.py
+```
 
-See `results/v5_factor_analysis/RESULTS_SUMMARY.md` for the completed v5
-results. v4 remains frozen under `archive/v4/`.
+## 解释与数据安全边界
+
+- 全流程只以规范化 `patient_id` 连接数据，不使用姓名或拼音。
+- 源临床表不被覆盖；临床值 0 和表格错误字符串按缺失处理。
+- 完整病例分析不填补临床变量；全队列模型不使用均值/中位数填补临床变量。
+- 预设的全局 MRI7 未使用本轮标签筛选；旧版 locked7 使用过标签，两者证据等级不同。
+- 当前结果均属于内部重复 OOF 验证，尚不能替代独立外部验证。

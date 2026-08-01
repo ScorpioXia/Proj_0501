@@ -1,0 +1,15 @@
+check,patients,missing,minimum,median,maximum,detail
+age_years_availability,312,0,50.0,60.0,79.0,0 and spreadsheet error strings are treated as missing
+height_m_availability,266,46,1.6,1.8,1.8,0 and spreadsheet error strings are treated as missing
+weight_kg_availability,151,161,50.0,68.0,103.0,0 and spreadsheet error strings are treated as missing
+bmi_kg_m2_availability,130,182,18.36547291,25.700612005,33.63265306,0 and spreadsheet error strings are treated as missing
+complete_age_height_weight_bmi,95,217,,,,"{0: 62, 1: 33}"
+complete_age_bmi,130,182,,,,"{0: 79, 1: 51}"
+multifidus_3d_volume_asymmetry_availability,312,0,3.878825491643243e-05,0.022057722356992326,0.6535087719298246,global MRI mechanistic panel
+multifidus_mean_fip_availability,312,0,0.00016515367077795,0.19424905215731433,0.6625896925447169,global MRI mechanistic panel
+multifidus_mean_functional_csa_availability,312,0,121.98413223806497,456.9556194596822,964.0086752913301,global MRI mechanistic panel
+erector_spinae_mean_fip_availability,312,0,1.3235173803503864e-05,0.078005377318205,0.503889583562921,global MRI mechanistic panel
+erector_spinae_mean_functional_csa_availability,312,0,758.6131219693619,1370.078125,2752.956143392823,global MRI mechanistic panel
+psoas_mean_fip_availability,312,0,0.0,0.013154763164495799,0.3859908164117783,global MRI mechanistic panel
+psoas_mean_functional_csa_availability,312,0,47.45101585974483,616.7657902993071,1792.1361205257624,global MRI mechanistic panel
+recorded_bmi_vs_weight_height_squared,95,0,3.552713678800501e-15,3.389922149999993,8.179546323703708,fraction absolute difference <=2 BMI units: 0.347

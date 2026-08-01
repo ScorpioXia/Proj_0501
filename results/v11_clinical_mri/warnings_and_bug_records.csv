@@ -1,0 +1,8 @@
+severity,code,detail
+warning,COMPLETE4_COUNT_DIFFERS_FROM_EXPECTATION,"Only 95 patients have positive/non-error age, height, weight, and BMI values simultaneously; BMI is available for 130."
+warning,HEIGHT_HEADER_UNIT_MISMATCH,"Source header is height_cm, but observed values are 1.6 to 1.8 and were interpreted as metres without modifying the source file."
+warning,RECORDED_BMI_NOT_CONSISTENT_WITH_ROUNDED_HEIGHT_WEIGHT,"Among complete cases, median absolute recorded-versus-calculated BMI difference is 3.39; only 34.7% are within 2 BMI units. Recorded BMI was retained rather than recomputed."
+warning,CLINICAL_MISSINGNESS_NOT_RANDOM,The 312-patient native-missing analysis can exploit missingness patterns; interpret it as secondary and audit data-source patterns before clinical claims.
+warning,LOCKED7_SELECTION_OVERLAP,The exact seven v7 variables were selected with the same 219 labels. v8 reuse is not an independent validation even though the panel is fixed during its CV.
+info,NO_CLINICAL_IMPUTATION,"Clinical complete-case models contain no missing values; the full-cohort XGBoost receives NaN values and missingness indicators, with no mean or median substitution."
+info,SLIP_SEGMENT_OMITTED_FULL_COHORT,The all-312 analysis uses global MRI features and omits slip-segment localization entirely.

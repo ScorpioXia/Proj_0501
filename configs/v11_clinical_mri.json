@@ -1,0 +1,17 @@
+{
+  "experiment_version": "v11_clinical_mri",
+  "paths": {
+    "label_file": "data/labels/PATIENT_LIST_FILE.csv",
+    "global_3d_feature_file": "data/features/features_312_20260722/muscle_features_3d_v7.csv",
+    "locked_feature_universe_file": "data/derived/v11_clinical_mri/patient_feature_universe_raw.csv",
+    "locked_selection_file": "data/derived/v11_clinical_mri/optimistic_global_selection_NOT_VALID.csv",
+    "output_dir": "results/v11_clinical_mri"
+  },
+  "validation": {
+    "repeats": 10,
+    "outer_folds": 5,
+    "inner_folds": 4,
+    "base_seed": 20260730,
+    "bootstrap_iterations": 3000
+  }
+}

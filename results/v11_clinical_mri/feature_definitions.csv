@@ -1,0 +1,19 @@
+feature,group,definition
+age_years,clinical,Age in years from PATIENT_LIST_FILE.csv.
+height_m,clinical,Height stored in source column height_cm but observed and interpreted as metres.
+weight_kg,clinical,Weight in kilograms.
+bmi_kg_m2,clinical,Recorded BMI; not recomputed from rounded height and weight.
+multifidus_3d_volume_asymmetry,mri7_global_mechanistic,abs(left-right)/(abs(left)+abs(right)) for multifidus 3D volume.
+multifidus_mean_fip,mri7_global_mechanistic,Mean of left and right multifidus Mean_FIP.
+multifidus_mean_functional_csa,mri7_global_mechanistic,Mean of left and right multifidus Mean_Func_CSA.
+erector_spinae_mean_fip,mri7_global_mechanistic,Mean of left and right erector_spinae Mean_FIP.
+erector_spinae_mean_functional_csa,mri7_global_mechanistic,Mean of left and right erector_spinae Mean_Func_CSA.
+psoas_mean_fip,mri7_global_mechanistic,Mean of left and right psoas Mean_FIP.
+psoas_mean_functional_csa,mri7_global_mechanistic,Mean of left and right psoas Mean_Func_CSA.
+2d__target__psoas__Aspect_Ratio__mean,v7_label_selected_locked7,Selected with all 219 labels in v7; reused unchanged in v8 and not independently validated.
+2d__target_minus_cranial__multifidus__Mean_Intensity_Lean_Muscle__mean,v7_label_selected_locked7,Selected with all 219 labels in v7; reused unchanged in v8 and not independently validated.
+2d__target_minus_cranial__erector_spinae__Mean_Intensity_Lean_Muscle__mean,v7_label_selected_locked7,Selected with all 219 labels in v7; reused unchanged in v8 and not independently validated.
+2d__target__erector_spinae__Texture_GLCM_Contrast__asymmetry,v7_label_selected_locked7,Selected with all 219 labels in v7; reused unchanged in v8 and not independently validated.
+2d__target__erector_spinae__Std_Intensity_Muscle__asymmetry,v7_label_selected_locked7,Selected with all 219 labels in v7; reused unchanged in v8 and not independently validated.
+3d__global__multifidus__3D_Volume__asymmetry,v7_label_selected_locked7,Selected with all 219 labels in v7; reused unchanged in v8 and not independently validated.
+3d_cross__erector_spinae__Centroid_Z_Drift__mean,v7_label_selected_locked7,Selected with all 219 labels in v7; reused unchanged in v8 and not independently validated.
