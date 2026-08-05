@@ -1,0 +1,5 @@
+severity,code,detail
+warning,LOCKED7_OUTCOME_SELECTION_OVERLAP,The historical seven features were selected using the same 219 labels; every v13 absolute AUC remains exploratory.
+warning,STAGE3_MULTIPLE_COMPARISONS,Stage 3 evaluates many add-one candidates; raw maximum AUC is not confirmatory and FDR correction is required.
+info,STAGE4_SCOPE,Stage 4 nests selection of the eighth feature only; it cannot undo historical selection of the base seven.
+info,TRAIN_FOLD_PREPROCESSING,"Median imputation, scaling and tuning are fitted inside training folds only."

@@ -1,0 +1,7 @@
+check,value,detail
+cohort,219,"{0: 132, 1: 87}"
+locked_features,7,historically selected with all 219 labels
+asymmetry_features_total,78,feature names containing asymmetry
+asymmetry_overlap_with_locked7,3,"['2d__target__erector_spinae__Texture_GLCM_Contrast__asymmetry', '2d__target__erector_spinae__Std_Intensity_Muscle__asymmetry', '3d__global__multifidus__3D_Volume__asymmetry']"
+new_asymmetry_candidates_eligible,75,locked7 overlaps excluded
+new_asymmetry_candidates_excluded,0,[]

@@ -1,0 +1,7 @@
+check,value,detail
+cohort,219,"{0: 132, 1: 87}"
+target_slip_segment_counts,2,"{'L4': 218, 'L5': 1}"
+target_rows_after_annotation_join,5252,expected=5256
+patients_with_any_prior_core_missing,1,['483']
+prior_core_feature_count,18,fixed before v12 outcome modeling
+locked_feature_count,7,historically outcome selected; exploratory only

@@ -11,6 +11,11 @@ results/**/mean_oof_predictions_by_patient.csv
 results/**/cohort_membership_and_clinical_values.csv
 results/**/shared_fold_assignments.csv
 results/**/inner_tuning_choices.csv
+results/**/shared_outer_fold_assignments.csv
+results/**/locked7_patient_table.csv
+results/**/all_inner_candidate_scores.csv
+results/**/checkpoints/
+results/**/run_progress.log
 results/**/run_stdout.log
 results/**/run_stderr.log
 

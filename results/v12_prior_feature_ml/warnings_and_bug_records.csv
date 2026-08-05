@@ -1,0 +1,6 @@
+severity,code,detail
+warning,SEGMENT_NEAR_CONSTANT,"target_slip_segment counts={'L4': 218, 'L5': 1}; segment provides almost no estimable population-level information."
+warning,LOCKED7_OUTCOME_SELECTION_OVERLAP,The historical seven features were selected using the same 219 labels; prior_plus_locked7 is exploratory and optimistically biased.
+warning,ANNOTATION_PROTOCOL_INFERRED,The 219 slice-level anatomical mapping is protocol-derived rather than individually reviewed anatomy.
+info,TRAIN_FOLD_IMPUTATION_ONLY,Missing numeric values are retained in the table and median-imputed inside each training fold only.
+info,MRI_GRAY_NOT_DIRECT_FAT_FRACTION,Mean MRI gray intensity is sequence- and normalization-dependent and must not be described as a quantitative fat fraction without sequence-specific validation.

@@ -1,0 +1,26 @@
+feature,panel,source,base_column,muscle_or_group,definition,outcome_selected
+target__multifidus_left__CSA_mm2,prior_core,muscle_features_2d_v7.csv,Area,multifidus_left,Median target-level CSA across annotated slices,no
+target__multifidus_right__CSA_mm2,prior_core,muscle_features_2d_v7.csv,Area,multifidus_right,Median target-level CSA across annotated slices,no
+target__multifidus_left__Mean_Gray,prior_core,muscle_features_2d_v7.csv,Mean_Intensity_Muscle,multifidus_left,Median target-level mean MRI intensity,no
+target__multifidus_right__Mean_Gray,prior_core,muscle_features_2d_v7.csv,Mean_Intensity_Muscle,multifidus_right,Median target-level mean MRI intensity,no
+target__multifidus__CSA_asymmetry,prior_core,muscle_features_2d_v7.csv,Area,multifidus,2*abs(left-right)/(abs(left)+abs(right)),no
+target__multifidus__Mean_Gray_asymmetry,prior_core,muscle_features_2d_v7.csv,Mean_Intensity_Muscle,multifidus,2*abs(left-right)/(abs(left)+abs(right)),no
+target__erector_spinae_left__CSA_mm2,prior_core,muscle_features_2d_v7.csv,Area,erector_spinae_left,Median target-level CSA across annotated slices,no
+target__erector_spinae_right__CSA_mm2,prior_core,muscle_features_2d_v7.csv,Area,erector_spinae_right,Median target-level CSA across annotated slices,no
+target__erector_spinae_left__Mean_Gray,prior_core,muscle_features_2d_v7.csv,Mean_Intensity_Muscle,erector_spinae_left,Median target-level mean MRI intensity,no
+target__erector_spinae_right__Mean_Gray,prior_core,muscle_features_2d_v7.csv,Mean_Intensity_Muscle,erector_spinae_right,Median target-level mean MRI intensity,no
+target__erector_spinae__CSA_asymmetry,prior_core,muscle_features_2d_v7.csv,Area,erector_spinae,2*abs(left-right)/(abs(left)+abs(right)),no
+target__erector_spinae__Mean_Gray_asymmetry,prior_core,muscle_features_2d_v7.csv,Mean_Intensity_Muscle,erector_spinae,2*abs(left-right)/(abs(left)+abs(right)),no
+target__psoas_left__CSA_mm2,prior_core,muscle_features_2d_v7.csv,Area,psoas_left,Median target-level CSA across annotated slices,no
+target__psoas_right__CSA_mm2,prior_core,muscle_features_2d_v7.csv,Area,psoas_right,Median target-level CSA across annotated slices,no
+target__psoas_left__Mean_Gray,prior_core,muscle_features_2d_v7.csv,Mean_Intensity_Muscle,psoas_left,Median target-level mean MRI intensity,no
+target__psoas_right__Mean_Gray,prior_core,muscle_features_2d_v7.csv,Mean_Intensity_Muscle,psoas_right,Median target-level mean MRI intensity,no
+target__psoas__CSA_asymmetry,prior_core,muscle_features_2d_v7.csv,Area,psoas,2*abs(left-right)/(abs(left)+abs(right)),no
+target__psoas__Mean_Gray_asymmetry,prior_core,muscle_features_2d_v7.csv,Mean_Intensity_Muscle,psoas,2*abs(left-right)/(abs(left)+abs(right)),no
+2d__target__psoas__Aspect_Ratio__mean,locked7_exploratory,patient_feature_universe_raw.csv,2d__target__psoas__Aspect_Ratio__mean,see historical feature dictionary,Historical locked feature; selected using all 219 labels before v12,yes
+2d__target_minus_cranial__multifidus__Mean_Intensity_Lean_Muscle__mean,locked7_exploratory,patient_feature_universe_raw.csv,2d__target_minus_cranial__multifidus__Mean_Intensity_Lean_Muscle__mean,see historical feature dictionary,Historical locked feature; selected using all 219 labels before v12,yes
+2d__target_minus_cranial__erector_spinae__Mean_Intensity_Lean_Muscle__mean,locked7_exploratory,patient_feature_universe_raw.csv,2d__target_minus_cranial__erector_spinae__Mean_Intensity_Lean_Muscle__mean,see historical feature dictionary,Historical locked feature; selected using all 219 labels before v12,yes
+2d__target__erector_spinae__Texture_GLCM_Contrast__asymmetry,locked7_exploratory,patient_feature_universe_raw.csv,2d__target__erector_spinae__Texture_GLCM_Contrast__asymmetry,see historical feature dictionary,Historical locked feature; selected using all 219 labels before v12,yes
+2d__target__erector_spinae__Std_Intensity_Muscle__asymmetry,locked7_exploratory,patient_feature_universe_raw.csv,2d__target__erector_spinae__Std_Intensity_Muscle__asymmetry,see historical feature dictionary,Historical locked feature; selected using all 219 labels before v12,yes
+3d__global__multifidus__3D_Volume__asymmetry,locked7_exploratory,patient_feature_universe_raw.csv,3d__global__multifidus__3D_Volume__asymmetry,see historical feature dictionary,Historical locked feature; selected using all 219 labels before v12,yes
+3d_cross__erector_spinae__Centroid_Z_Drift__mean,locked7_exploratory,patient_feature_universe_raw.csv,3d_cross__erector_spinae__Centroid_Z_Drift__mean,see historical feature dictionary,Historical locked feature; selected using all 219 labels before v12,yes

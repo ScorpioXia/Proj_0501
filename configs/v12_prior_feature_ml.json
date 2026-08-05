@@ -1,0 +1,48 @@
+{
+  "experiment_version": "v12_prior_feature_ml",
+  "paths": {
+    "label_file": "data/labels/PATIENT_LIST_FILE.csv",
+    "annotation_file": "data/annotations/slice_level_annotations_219_v2.csv",
+    "feature_2d_file": "data/features/features_312_20260722/muscle_features_2d_v7.csv",
+    "locked_feature_universe_file": "data/derived/v11_clinical_mri/patient_feature_universe_raw.csv",
+    "locked_selection_file": "data/derived/v11_clinical_mri/optimistic_global_selection_NOT_VALID.csv",
+    "output_dir": "results/v12_prior_feature_ml"
+  },
+  "features": {
+    "csa_column": "Area",
+    "mean_gray_column": "Mean_Intensity_Muscle",
+    "include_target_slip_segment": true,
+    "feature_sets": [
+      "prior_core",
+      "prior_plus_locked7"
+    ]
+  },
+  "validation": {
+    "repeats": 10,
+    "outer_folds": 5,
+    "inner_folds": 4,
+    "base_seed": 20260802,
+    "bootstrap_iterations": 3000,
+    "permutation_repeats": 10,
+    "n_jobs": 1
+  },
+  "models": {
+    "xgboost": {
+      "n_estimators": [150, 300],
+      "max_depth": [2, 3],
+      "learning_rate": [0.03, 0.08]
+    },
+    "lightgbm": {
+      "n_estimators": [150, 300],
+      "num_leaves": [7, 15],
+      "learning_rate": [0.03, 0.08]
+    },
+    "random_forest": {
+      "n_estimators": [300],
+      "max_depth": [3, 5, null],
+      "min_samples_leaf": [5, 10],
+      "max_features": ["sqrt"]
+    }
+  }
+}
+

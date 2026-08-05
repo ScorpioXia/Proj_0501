@@ -1,0 +1,9 @@
+{
+  "status": "running",
+  "started_at": "2026-08-05T10:46:08",
+  "requested_stages": [
+    3
+  ],
+  "completed_stages": [],
+  "resume": true
+}

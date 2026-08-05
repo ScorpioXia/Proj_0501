@@ -1,0 +1,192 @@
+{
+  "label_file": "E:\\code\\Proj_0501\\Proj_0501\\data\\labels\\PATIENT_LIST_FILE.csv",
+  "feature_universe_file": "E:\\code\\Proj_0501\\Proj_0501\\data\\derived\\v11_clinical_mri\\patient_feature_universe_raw.csv",
+  "locked_selection_file": "E:\\code\\Proj_0501\\Proj_0501\\data\\derived\\v11_clinical_mri\\optimistic_global_selection_NOT_VALID.csv",
+  "output_dir": "E:\\code\\Proj_0501\\Proj_0501\\results\\v13_locked7_asymmetry",
+  "stages": [
+    3
+  ],
+  "repeats": 10,
+  "outer_folds": 5,
+  "inner_folds": 4,
+  "stage3_repeats": 5,
+  "stage4_repeats": 5,
+  "stage4_inner_folds": 3,
+  "base_seed": 20260803,
+  "bootstrap_iterations": 3000,
+  "screening_bootstrap_iterations": 1000,
+  "permutation_iterations": 2000,
+  "n_jobs": 1,
+  "model_grids": {
+    "l2_logistic": {
+      "C": [
+        0.01,
+        0.1,
+        1.0,
+        10.0
+      ]
+    },
+    "random_forest": {
+      "n_estimators": [
+        300
+      ],
+      "max_depth": [
+        3,
+        5,
+        null
+      ],
+      "min_samples_leaf": [
+        5,
+        10
+      ],
+      "max_features": [
+        "sqrt"
+      ]
+    },
+    "xgboost": {
+      "n_estimators": [
+        150,
+        300
+      ],
+      "max_depth": [
+        2,
+        3
+      ],
+      "learning_rate": [
+        0.03,
+        0.08
+      ]
+    }
+  },
+  "fixed_model_params": {
+    "l2_logistic": {
+      "C": 1.0
+    },
+    "random_forest": {
+      "n_estimators": 300,
+      "max_depth": 5,
+      "min_samples_leaf": 10,
+      "max_features": "sqrt"
+    },
+    "xgboost": {
+      "n_estimators": 200,
+      "max_depth": 2,
+      "learning_rate": 0.03
+    }
+  },
+  "expected_locked_features": 7,
+  "expected_asymmetry_features": 78,
+  "expected_new_asymmetry_candidates": 75,
+  "candidate_min_nonmissing_fraction": 0.8,
+  "validate_only": false,
+  "resume": true,
+  "environment": {
+    "python_executable": "C:\\ProgramData\\anaconda3\\envs\\nnUNet-master\\python.exe",
+    "python": "3.10.19 | packaged by conda-forge | (main, Oct 22 2025, 22:23:22) [MSC v.1944 64 bit (AMD64)]",
+    "platform": "Windows-10-10.0.22621-SP0",
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "scikit_learn": "1.7.2",
+    "xgboost": "3.2.0"
+  },
+  "cohort": {
+    "patients": 219,
+    "label_counts": {
+      "0": 132,
+      "1": 87
+    }
+  },
+  "locked_features": [
+    "2d__target__psoas__Aspect_Ratio__mean",
+    "2d__target_minus_cranial__multifidus__Mean_Intensity_Lean_Muscle__mean",
+    "2d__target_minus_cranial__erector_spinae__Mean_Intensity_Lean_Muscle__mean",
+    "2d__target__erector_spinae__Texture_GLCM_Contrast__asymmetry",
+    "2d__target__erector_spinae__Std_Intensity_Muscle__asymmetry",
+    "3d__global__multifidus__3D_Volume__asymmetry",
+    "3d_cross__erector_spinae__Centroid_Z_Drift__mean"
+  ],
+  "asymmetry_features_total": 78,
+  "overlapping_asymmetry_features": [
+    "2d__target__erector_spinae__Texture_GLCM_Contrast__asymmetry",
+    "2d__target__erector_spinae__Std_Intensity_Muscle__asymmetry",
+    "3d__global__multifidus__3D_Volume__asymmetry"
+  ],
+  "new_asymmetry_candidates": [
+    "2d__global__multifidus__Mean_Intensity_Muscle__asymmetry",
+    "2d__global__multifidus__Texture_FirstOrder_Entropy__asymmetry",
+    "2d__global__multifidus__IQR_Intensity_Muscle__asymmetry",
+    "2d__global__multifidus__FIP__asymmetry",
+    "2d__global__multifidus__Lean_Muscle_Area__asymmetry",
+    "2d__global__multifidus__Fat_Area__asymmetry",
+    "2d__global__multifidus__Texture_GLCM_Contrast__asymmetry",
+    "2d__global__multifidus__Texture_GLCM_Idm__asymmetry",
+    "2d__global__multifidus__Std_Intensity_Muscle__asymmetry",
+    "2d__global__multifidus__muscle_area_mm2__asymmetry",
+    "2d__global__erector_spinae__Mean_Intensity_Muscle__asymmetry",
+    "2d__global__erector_spinae__Texture_FirstOrder_Entropy__asymmetry",
+    "2d__global__erector_spinae__IQR_Intensity_Muscle__asymmetry",
+    "2d__global__erector_spinae__FIP__asymmetry",
+    "2d__global__erector_spinae__Lean_Muscle_Area__asymmetry",
+    "2d__global__erector_spinae__Fat_Area__asymmetry",
+    "2d__global__erector_spinae__Texture_GLCM_Contrast__asymmetry",
+    "2d__global__erector_spinae__Texture_GLCM_Idm__asymmetry",
+    "2d__global__erector_spinae__Std_Intensity_Muscle__asymmetry",
+    "2d__global__erector_spinae__muscle_area_mm2__asymmetry",
+    "2d__global__psoas__Mean_Intensity_Muscle__asymmetry",
+    "2d__global__psoas__Texture_FirstOrder_Entropy__asymmetry",
+    "2d__global__psoas__IQR_Intensity_Muscle__asymmetry",
+    "2d__global__psoas__FIP__asymmetry",
+    "2d__global__psoas__Lean_Muscle_Area__asymmetry",
+    "2d__global__psoas__Fat_Area__asymmetry",
+    "2d__global__psoas__Texture_GLCM_Contrast__asymmetry",
+    "2d__global__psoas__Texture_GLCM_Idm__asymmetry",
+    "2d__global__psoas__Std_Intensity_Muscle__asymmetry",
+    "2d__global__psoas__muscle_area_mm2__asymmetry",
+    "2d__target__multifidus__Mean_Intensity_Muscle__asymmetry",
+    "2d__target__multifidus__Texture_FirstOrder_Entropy__asymmetry",
+    "2d__target__multifidus__IQR_Intensity_Muscle__asymmetry",
+    "2d__target__multifidus__FIP__asymmetry",
+    "2d__target__multifidus__Lean_Muscle_Area__asymmetry",
+    "2d__target__multifidus__Fat_Area__asymmetry",
+    "2d__target__multifidus__Texture_GLCM_Contrast__asymmetry",
+    "2d__target__multifidus__Texture_GLCM_Idm__asymmetry",
+    "2d__target__multifidus__Std_Intensity_Muscle__asymmetry",
+    "2d__target__multifidus__muscle_area_mm2__asymmetry",
+    "2d__target__erector_spinae__Mean_Intensity_Muscle__asymmetry",
+    "2d__target__erector_spinae__Texture_FirstOrder_Entropy__asymmetry",
+    "2d__target__erector_spinae__IQR_Intensity_Muscle__asymmetry",
+    "2d__target__erector_spinae__FIP__asymmetry",
+    "2d__target__erector_spinae__Lean_Muscle_Area__asymmetry",
+    "2d__target__erector_spinae__Fat_Area__asymmetry",
+    "2d__target__erector_spinae__Texture_GLCM_Idm__asymmetry",
+    "2d__target__erector_spinae__muscle_area_mm2__asymmetry",
+    "2d__target__psoas__Mean_Intensity_Muscle__asymmetry",
+    "2d__target__psoas__Texture_FirstOrder_Entropy__asymmetry",
+    "2d__target__psoas__IQR_Intensity_Muscle__asymmetry",
+    "2d__target__psoas__FIP__asymmetry",
+    "2d__target__psoas__Lean_Muscle_Area__asymmetry",
+    "2d__target__psoas__Fat_Area__asymmetry",
+    "2d__target__psoas__Texture_GLCM_Contrast__asymmetry",
+    "2d__target__psoas__Texture_GLCM_Idm__asymmetry",
+    "2d__target__psoas__Std_Intensity_Muscle__asymmetry",
+    "2d__target__psoas__muscle_area_mm2__asymmetry",
+    "3d__global__multifidus__3D_Func_Volume__asymmetry",
+    "3d__global__multifidus__3D_FIP__asymmetry",
+    "3d__global__multifidus__Mean_Area__asymmetry",
+    "3d__global__multifidus__Mean_Func_CSA__asymmetry",
+    "3d__global__multifidus__Mean_FIP__asymmetry",
+    "3d__global__erector_spinae__3D_Volume__asymmetry",
+    "3d__global__erector_spinae__3D_Func_Volume__asymmetry",
+    "3d__global__erector_spinae__3D_FIP__asymmetry",
+    "3d__global__erector_spinae__Mean_Area__asymmetry",
+    "3d__global__erector_spinae__Mean_Func_CSA__asymmetry",
+    "3d__global__erector_spinae__Mean_FIP__asymmetry",
+    "3d__global__psoas__3D_Volume__asymmetry",
+    "3d__global__psoas__3D_Func_Volume__asymmetry",
+    "3d__global__psoas__3D_FIP__asymmetry",
+    "3d__global__psoas__Mean_Area__asymmetry",
+    "3d__global__psoas__Mean_Func_CSA__asymmetry",
+    "3d__global__psoas__Mean_FIP__asymmetry"
+  ],
+  "evidence_boundary": "Exploratory: base seven were historically selected with all 219 labels"
+}

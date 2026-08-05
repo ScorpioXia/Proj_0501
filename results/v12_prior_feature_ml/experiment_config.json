@@ -1,0 +1,122 @@
+{
+  "label_file": "E:\\code\\Proj_0501\\Proj_0501\\data\\labels\\PATIENT_LIST_FILE.csv",
+  "annotation_file": "E:\\code\\Proj_0501\\Proj_0501\\data\\annotations\\slice_level_annotations_219_v2.csv",
+  "feature_2d_file": "E:\\code\\Proj_0501\\Proj_0501\\data\\features\\features_312_20260722\\muscle_features_2d_v7.csv",
+  "locked_feature_universe_file": "E:\\code\\Proj_0501\\Proj_0501\\data\\derived\\v11_clinical_mri\\patient_feature_universe_raw.csv",
+  "locked_selection_file": "E:\\code\\Proj_0501\\Proj_0501\\data\\derived\\v11_clinical_mri\\optimistic_global_selection_NOT_VALID.csv",
+  "output_dir": "E:\\code\\Proj_0501\\Proj_0501\\results\\v12_prior_feature_ml",
+  "csa_column": "Area",
+  "mean_gray_column": "Mean_Intensity_Muscle",
+  "include_target_slip_segment": true,
+  "feature_sets": [
+    "prior_core",
+    "prior_plus_locked7"
+  ],
+  "repeats": 10,
+  "outer_folds": 5,
+  "inner_folds": 4,
+  "base_seed": 20260802,
+  "bootstrap_iterations": 3000,
+  "permutation_repeats": 10,
+  "n_jobs": 1,
+  "model_grids": {
+    "xgboost": {
+      "n_estimators": [
+        150,
+        300
+      ],
+      "max_depth": [
+        2,
+        3
+      ],
+      "learning_rate": [
+        0.03,
+        0.08
+      ]
+    },
+    "lightgbm": {
+      "n_estimators": [
+        150,
+        300
+      ],
+      "num_leaves": [
+        7,
+        15
+      ],
+      "learning_rate": [
+        0.03,
+        0.08
+      ]
+    },
+    "random_forest": {
+      "n_estimators": [
+        300
+      ],
+      "max_depth": [
+        3,
+        5,
+        null
+      ],
+      "min_samples_leaf": [
+        5,
+        10
+      ],
+      "max_features": [
+        "sqrt"
+      ]
+    }
+  },
+  "validate_only": false,
+  "resume": true,
+  "environment": {
+    "python_executable": "C:\\ProgramData\\anaconda3\\envs\\nnUNet-master\\python.exe",
+    "python": "3.10.19 | packaged by conda-forge | (main, Oct 22 2025, 22:23:22) [MSC v.1944 64 bit (AMD64)]",
+    "platform": "Windows-10-10.0.22621-SP0",
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "scikit_learn": "1.7.2",
+    "xgboost": "3.2.0",
+    "lightgbm": "4.7.0"
+  },
+  "cohort": {
+    "patients": 219,
+    "label_counts": {
+      "0": 132,
+      "1": 87
+    },
+    "segment_counts": {
+      "L4": 218,
+      "L5": 1
+    }
+  },
+  "core_features": [
+    "target__multifidus_left__CSA_mm2",
+    "target__multifidus_right__CSA_mm2",
+    "target__multifidus_left__Mean_Gray",
+    "target__multifidus_right__Mean_Gray",
+    "target__multifidus__CSA_asymmetry",
+    "target__multifidus__Mean_Gray_asymmetry",
+    "target__erector_spinae_left__CSA_mm2",
+    "target__erector_spinae_right__CSA_mm2",
+    "target__erector_spinae_left__Mean_Gray",
+    "target__erector_spinae_right__Mean_Gray",
+    "target__erector_spinae__CSA_asymmetry",
+    "target__erector_spinae__Mean_Gray_asymmetry",
+    "target__psoas_left__CSA_mm2",
+    "target__psoas_right__CSA_mm2",
+    "target__psoas_left__Mean_Gray",
+    "target__psoas_right__Mean_Gray",
+    "target__psoas__CSA_asymmetry",
+    "target__psoas__Mean_Gray_asymmetry"
+  ],
+  "locked_features": [
+    "2d__target__psoas__Aspect_Ratio__mean",
+    "2d__target_minus_cranial__multifidus__Mean_Intensity_Lean_Muscle__mean",
+    "2d__target_minus_cranial__erector_spinae__Mean_Intensity_Lean_Muscle__mean",
+    "2d__target__erector_spinae__Texture_GLCM_Contrast__asymmetry",
+    "2d__target__erector_spinae__Std_Intensity_Muscle__asymmetry",
+    "3d__global__multifidus__3D_Volume__asymmetry",
+    "3d_cross__erector_spinae__Centroid_Z_Drift__mean"
+  ],
+  "runtime_seconds": 2953.8533527851105
+}

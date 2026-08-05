@@ -1,0 +1,4 @@
+model,comparison,patients,prior_core_auc,prior_plus_locked7_auc,paired_auc_difference,ci_low,ci_high,interpretation
+lightgbm,prior_plus_locked7_minus_prior_core,219,0.4612504353883664,0.5705329153605015,0.10928247997213514,0.040813693616670324,0.1790578972193619,exploratory only because locked7 used all 219 labels
+random_forest,prior_plus_locked7_minus_prior_core,219,0.4907697666318356,0.5847265761058864,0.09395680947405083,0.0358956407598315,0.15293229681045722,exploratory only because locked7 used all 219 labels
+xgboost,prior_plus_locked7_minus_prior_core,219,0.47439916405433646,0.5792406826889586,0.1048415186346221,0.03880058749623972,0.17366270735903078,exploratory only because locked7 used all 219 labels

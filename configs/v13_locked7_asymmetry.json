@@ -1,0 +1,60 @@
+{
+  "experiment_version": "v13_locked7_asymmetry",
+  "paths": {
+    "label_file": "data/labels/PATIENT_LIST_FILE.csv",
+    "feature_universe_file": "data/derived/v11_clinical_mri/patient_feature_universe_raw.csv",
+    "locked_selection_file": "data/derived/v11_clinical_mri/optimistic_global_selection_NOT_VALID.csv",
+    "output_dir": "results/v13_locked7_asymmetry"
+  },
+  "validation": {
+    "repeats": 10,
+    "outer_folds": 5,
+    "inner_folds": 4,
+    "stage3_repeats": 5,
+    "stage4_repeats": 5,
+    "stage4_inner_folds": 3,
+    "base_seed": 20260803,
+    "bootstrap_iterations": 3000,
+    "screening_bootstrap_iterations": 1000,
+    "permutation_iterations": 2000,
+    "n_jobs": 1
+  },
+  "feature_contract": {
+    "expected_locked_features": 7,
+    "expected_asymmetry_features": 78,
+    "expected_new_asymmetry_candidates": 75,
+    "candidate_min_nonmissing_fraction": 0.80
+  },
+  "model_grids_stage1_stage2": {
+    "l2_logistic": {
+      "C": [0.01, 0.1, 1.0, 10.0]
+    },
+    "random_forest": {
+      "n_estimators": [300],
+      "max_depth": [3, 5, null],
+      "min_samples_leaf": [5, 10],
+      "max_features": ["sqrt"]
+    },
+    "xgboost": {
+      "n_estimators": [150, 300],
+      "max_depth": [2, 3],
+      "learning_rate": [0.03, 0.08]
+    }
+  },
+  "fixed_model_params_stage3_stage4": {
+    "l2_logistic": {
+      "C": 1.0
+    },
+    "random_forest": {
+      "n_estimators": 300,
+      "max_depth": 5,
+      "min_samples_leaf": 10,
+      "max_features": "sqrt"
+    },
+    "xgboost": {
+      "n_estimators": 200,
+      "max_depth": 2,
+      "learning_rate": 0.03
+    }
+  }
+}
